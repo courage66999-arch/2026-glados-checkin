@@ -1,5 +1,4 @@
 name: GLaDOS 2026 Checkin
-
 on:
   schedule:
     # 北京时间 09:30（UTC 01:30）。一天一次即可，脚本会在失败时自动重试。
@@ -25,7 +24,8 @@ permissions:
 jobs:
   checkin:
     if: github.event_name == 'schedule' || inputs.dispatch_source == 'manual' || inputs.dispatch_source == 'external'
-    runs-on: ubuntu-latest
+    # 修复：将引发今日升级故障的 ubuntu-latest 降级指定为之前稳定的 24.04 环境
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
 
     steps:
@@ -58,3 +58,4 @@ jobs:
           EXCHANGE_PLAN: ${{ vars.EXCHANGE_PLAN || 'plan500' }}
           CHECKIN_MAX_ATTEMPTS: '3'
           CHECKIN_RETRY_DELAY_SECONDS: '60'
+
